@@ -9,7 +9,6 @@
 .claude/mcp.json
 .claude/mcp.json
 info.json
-package-lock.json
 node_modules
 dist
 .DS_Store
@@ -17,3 +16,5 @@ dist
 .idea
 .pytest_cache
 .pytest_cache
+coverage
+.coverage-v8
