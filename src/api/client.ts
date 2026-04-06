@@ -347,6 +347,11 @@ export class GooglePlayConsoleAPI {
 
   /** AIP-160 style filter for Play Developer Reporting query endpoints. */
   private buildReportingFilter(filters: any): string | undefined {
+    const escapeFilterString = (value: unknown): string =>
+      String(value)
+        .replace(/\\/g, "\\\\")
+        .replace(/"/g, '\\"');
+
     const parts: string[] = [];
     if (filters.versionCode != null && filters.versionCode !== "") {
       parts.push(`versionCode = ${filters.versionCode}`);
@@ -355,15 +360,20 @@ export class GooglePlayConsoleAPI {
       parts.push(`apiLevel = ${filters.apiLevel}`);
     }
     if (filters.deviceModel) {
-      parts.push(`deviceModel = "${String(filters.deviceModel).replace(/"/g, '\\"')}"`);
+      parts.push(`deviceModel = "${escapeFilterString(filters.deviceModel)}"`);
     }
     if (filters.country) {
-      parts.push(`countryCode = "${String(filters.country).replace(/"/g, '\\"')}"`);
+      parts.push(`countryCode = "${escapeFilterString(filters.country)}"`);
     }
     return parts.length ? parts.join(" AND ") : undefined;
   }
 
   private buildErrorIssuesFilter(filters: any): string | undefined {
+    const escapeFilterString = (value: unknown): string =>
+      String(value)
+        .replace(/\\/g, "\\\\")
+        .replace(/"/g, '\\"');
+
     const parts: string[] = [];
     if (filters.versionCode != null && filters.versionCode !== "") {
       parts.push(`versionCode = ${filters.versionCode}`);
@@ -372,7 +382,7 @@ export class GooglePlayConsoleAPI {
       parts.push(`apiLevel = ${filters.apiLevel}`);
     }
     if (filters.deviceModel) {
-      parts.push(`deviceModel = "${String(filters.deviceModel).replace(/"/g, '\\"')}"`);
+      parts.push(`deviceModel = "${escapeFilterString(filters.deviceModel)}"`);
     }
     return parts.length ? parts.join(" AND ") : undefined;
   }

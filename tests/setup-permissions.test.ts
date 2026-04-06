@@ -78,6 +78,14 @@ test("classifySetupError identifies permission and reporting issues", () => {
   assert.equal(credentials.kind, "credentials-invalid");
 });
 
+test("classifySetupError does not match reporting API on hostname substrings", () => {
+  const spoofedHost = classifySetupError(
+    new Error("Request failed: https://evilplaydeveloperreporting.googleapis.com.evil/status")
+  );
+
+  assert.equal(spoofedHost.kind, "unknown");
+});
+
 test("verifySetupPermissions reports credential formatting failures distinctly", async () => {
   const authError =
     "Failed to authenticate with Google Play Console: Error: error:1E08010C:DECODER routines::unsupported";
