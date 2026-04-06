@@ -31,6 +31,9 @@ export interface SetupPermissionResult {
 export function classifySetupError(error: unknown): SetupErrorClassification {
   const details = error instanceof Error ? error.message : String(error);
   const lowered = details.toLowerCase();
+  const hasExactReportingApiHostname = /(^|[^a-z0-9.-])playdeveloperreporting\.googleapis\.com([^a-z0-9.-]|$)/i.test(
+    details
+  );
 
   if (lowered.includes("does not have permission")) {
     return { kind: "play-console-permission", details };
@@ -46,7 +49,7 @@ export function classifySetupError(error: unknown): SetupErrorClassification {
   }
 
   if (
-    lowered.includes("playdeveloperreporting.googleapis.com") ||
+    hasExactReportingApiHostname ||
     lowered.includes("developer reporting api has not been used") ||
     lowered.includes("reporting api")
   ) {
